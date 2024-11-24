@@ -3,7 +3,9 @@ import 'package:pos_project/models/product_model.dart';
 import 'package:pos_project/pages/CartPage.dart';
 import 'package:badges/badges.dart' as badges;
 
-int cartItemCount = 0;
+
+int cartItemCount = 0; // Counter jumlah item di keranjang
+
 
 class OrderPage extends StatefulWidget {
   final Product product;
@@ -21,6 +23,7 @@ class _OrderPageState extends State<OrderPage> {
   int quantity = 1;
   String notes = "";
 
+  // Fungsi untuk menghitung harga berdasarkan pilihan dan kuantitas
   int calculatePrice() {
     int price = widget.product.price;
     if (selectedSize == "Large") {
@@ -29,6 +32,7 @@ class _OrderPageState extends State<OrderPage> {
     return price * quantity;
   }
 
+  // Fungsi untuk membuat kotak pilihan
   Widget buildOptionBox({
     required String option,
     required String groupValue,
@@ -95,20 +99,21 @@ class _OrderPageState extends State<OrderPage> {
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CartPage(
-                      productTitle: "",
-                      selectedSize: "",
-                      selectedSweetness: "",
-                      selectedIceCube: "",
-                      quantity: 0,
-                      notes: "",
-                      totalPrice: 0,
-                      productImage: '',
-                    ),
-                  ),
-                );
+  context,
+  MaterialPageRoute(
+    builder: (context) => CartPage(
+      productTitle: widget.product.title,
+      selectedSize: selectedSize,
+      selectedSweetness: selectedSweetness,
+      selectedIceCube: selectedIceCube,
+      quantity: quantity,
+      totalPrice: calculatePrice(),
+      notes: notes,
+      productImage: widget.product.image,  
+    ),
+  ),
+);
+
               },
             ),
           ),
@@ -274,13 +279,26 @@ class _OrderPageState extends State<OrderPage> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-              setState(() {
-                cartItemCount++;
-              });
-            },
-            child: const Text('Add to Cart'),
-          ),
+  onPressed: () {
+    // Mengupdate cart item count
+    setState(() {
+      cartItemCount++;
+    });
+
+    // Notifikasi bahwa item telah ditambahkan ke keranjang
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Item added to cart!')),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.brown,
+    foregroundColor: Colors.white,
+  ),
+  child: const Text('Add to Cart'),
+),
+
+
+
         ],
       ),
     );

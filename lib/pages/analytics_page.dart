@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AnalyticsPage extends StatelessWidget {
-  const AnalyticsPage({super.key});
+class TransactionHistoryPage extends StatelessWidget {
+  const TransactionHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Analytics',
+          'Transaction History',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontWeight: FontWeight.bold,
@@ -23,7 +23,7 @@ class AnalyticsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Overview',
+              'Recent Transactions',
               style: TextStyle(
                 fontSize: 24,
                 fontFamily: 'Poppins',
@@ -31,31 +31,36 @@ class AnalyticsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildStatisticCard(context, 'Total Sales', '₱ 1200', Colors.blue),
-                _buildStatisticCard(context, 'Active Users', '150', Colors.green),
-                _buildStatisticCard(context, 'Total Orders', '300', Colors.orange),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Sales Trend',
-              style: TextStyle(
-                fontSize: 24,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
+            // List of recent transactions
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Placeholder(), // Ganti dengan grafik sesuai kebutuhan
+              child: ListView(
+                children: [
+                  _buildTransactionCard(
+                    context,
+                    'Transaction ID: 12345',
+                    '₱ 500',
+                    'Completed',
+                    '2024-11-20',
+                    Colors.green,
+                  ),
+                  _buildTransactionCard(
+                    context,
+                    'Transaction ID: 12346',
+                    '₱ 300',
+                    'Pending',
+                    '2024-11-19',
+                    Colors.orange,
+                  ),
+                  _buildTransactionCard(
+                    context,
+                    'Transaction ID: 12347',
+                    '₱ 700',
+                    'Completed',
+                    '2024-11-18',
+                    Colors.green,
+                  ),
+                  // Add more transactions here as needed
+                ],
               ),
             ),
           ],
@@ -64,38 +69,70 @@ class AnalyticsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatisticCard(BuildContext context, String title, String value, Color color) {
+  Widget _buildTransactionCard(
+    BuildContext context,
+    String transactionId,
+    String amount,
+    String status,
+    String date,
+    Color statusColor,
+  ) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
-        width: MediaQuery.of(context).size.width * 0.3, // Menyesuaikan lebar card
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1), // Opacity untuk latar belakang
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
+            // Transaction Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    transactionId,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Amount: $amount',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  Text(
+                    'Date: $date',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-                color: color,
+            // Status indicator
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: statusColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                status,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
+                  color: statusColor,
+                ),
               ),
             ),
           ],

@@ -50,15 +50,17 @@ class _HomeState extends State<Home> {
         children: [
           const HomePage(),
           CartPage(
-            productTitle: 'Default Product',
-            selectedSize: 'Medium',
-            selectedSweetness: 'Normal',
-            selectedIceCube: 'Normal',
-            quantity: 1,
-            totalPrice: 0,
-            notes: 'No notes', productImage: '', 
-          ),
-          const AnalyticsPage(),
+  productTitle: '',
+  selectedSize: '',
+  selectedSweetness: '',
+  selectedIceCube: '',
+  quantity: 0, // Set a default value (e.g., 0)
+  totalPrice: 0, // Set a default value (e.g., 0)
+  notes: '',
+  productImage: '',
+),
+
+          const TransactionHistoryPage(),
           
         ],
       ),

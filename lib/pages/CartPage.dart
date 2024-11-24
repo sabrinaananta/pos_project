@@ -32,15 +32,17 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    quantity = widget.quantity; // Initial quantity
+    quantity = widget.quantity; // Initialize quantity with the widget value
   }
 
+  // Function to increase quantity
   void _increaseQuantity() {
     setState(() {
       quantity++;
     });
   }
 
+  // Function to decrease quantity
   void _decreaseQuantity() {
     if (quantity > 1) {
       setState(() {
@@ -49,6 +51,7 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
+  // Calculate total price
   int calculateTotalPrice() {
     return widget.totalPrice * quantity;
   }
