@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pos_project/pages/CartPage.dart';
 import 'home_page.dart';
-import 'analytics_page.dart';
+import 'historypage.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -49,17 +48,7 @@ class _HomeState extends State<Home> {
         },
         children: [
           const HomePage(),
-          CartPage(
-  productTitle: '',
-  selectedSize: '',
-  selectedSweetness: '',
-  selectedIceCube: '',
-  quantity: 0, // Set a default value (e.g., 0)
-  totalPrice: 0, // Set a default value (e.g., 0)
-  notes: '',
-  productImage: '',
-),
-
+          
           const TransactionHistoryPage(),
           
         ],
@@ -72,10 +61,6 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: 'Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.analytics),

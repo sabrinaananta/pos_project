@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Menggunakan daftar transaksi global dari file lain
+import 'CartPage.dart';
+
 class TransactionHistoryPage extends StatelessWidget {
   const TransactionHistoryPage({super.key});
 
@@ -16,6 +19,12 @@ class TransactionHistoryPage extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,37 +40,31 @@ class TransactionHistoryPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // List of recent transactions
             Expanded(
-              child: ListView(
-                children: [
-                  _buildTransactionCard(
-                    context,
-                    'Transaction ID: 12345',
-                    '₱ 500',
-                    'Completed',
-                    '2024-11-20',
-                    Colors.green,
-                  ),
-                  _buildTransactionCard(
-                    context,
-                    'Transaction ID: 12346',
-                    '₱ 300',
-                    'Pending',
-                    '2024-11-19',
-                    Colors.orange,
-                  ),
-                  _buildTransactionCard(
-                    context,
-                    'Transaction ID: 12347',
-                    '₱ 700',
-                    'Completed',
-                    '2024-11-18',
-                    Colors.green,
-                  ),
-                  // Add more transactions here as needed
-                ],
-              ),
+              child: transactionHistory.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No transactions yet.',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: transactionHistory.length,
+                      itemBuilder: (context, index) {
+                        final transaction = transactionHistory[index];
+                        return _buildTransactionCard(
+                          context,
+                          transaction['transactionId'],
+                          'IDR ${transaction['totalPrice']}',
+                          'Completed',
+                          transaction['date'].substring(0, 10),
+                          Colors.green,
+                        );
+                      },
+                    ),
             ),
           ],
         ),
@@ -87,7 +90,6 @@ class TransactionHistoryPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Transaction Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,22 +105,15 @@ class TransactionHistoryPage extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     'Amount: $amount',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Poppins',
-                    ),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   Text(
                     'Date: $date',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Poppins',
-                    ),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ],
               ),
             ),
-            // Status indicator
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
@@ -129,7 +124,6 @@ class TransactionHistoryPage extends StatelessWidget {
                 status,
                 style: TextStyle(
                   fontSize: 14,
-                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   color: statusColor,
                 ),

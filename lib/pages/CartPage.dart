@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'historypage.dart';
+
+// Daftar transaksi global
+List<Map<String, dynamic>> transactionHistory = [];
 
 class CartPage extends StatefulWidget {
   final String productTitle;
@@ -32,7 +36,7 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    quantity = widget.quantity; // Initialize quantity with the widget value
+    quantity = widget.quantity;
   }
 
   // Function to increase quantity
@@ -119,7 +123,6 @@ class _CartPageState extends State<CartPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Decrease quantity
               IconButton(
                 onPressed: _decreaseQuantity,
                 icon: const Icon(Icons.remove),
@@ -128,7 +131,6 @@ class _CartPageState extends State<CartPage> {
                 '$quantity',
                 style: const TextStyle(fontSize: 20),
               ),
-              // Increase quantity
               IconButton(
                 onPressed: _increaseQuantity,
                 icon: const Icon(Icons.add),
@@ -162,11 +164,28 @@ class _CartPageState extends State<CartPage> {
           // Checkout button
           ElevatedButton(
             onPressed: () {
-              // Handle checkout logic here
+              // Simpan transaksi ke daftar global
+              transactionHistory.add({
+                'transactionId': DateTime.now().millisecondsSinceEpoch.toString(),
+                'productTitle': widget.productTitle,
+                'quantity': quantity,
+                'totalPrice': calculateTotalPrice(),
+                'date': DateTime.now().toIso8601String(),
+              });
+
+              // Navigasi ke halaman riwayat transaksi
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TransactionHistoryPage(),
+                ),
+              );
             },
             child: const Text('Proceed to Checkout'),
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white, backgroundColor: Colors.brown, minimumSize: const Size(double.infinity, 50),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.brown,
+              minimumSize: const Size(double.infinity, 50),
             ),
           ),
         ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_project/models/product_model.dart';
-import 'package:pos_project/pages/CartPage.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:pos_project/pages/CartPage.dart';
 
 
 int cartItemCount = 0; // Counter jumlah item di keranjang
